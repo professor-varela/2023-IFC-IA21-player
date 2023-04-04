@@ -7,24 +7,31 @@
         * {
             box-sizing: border-box;
         }
-
+        
         div.ia21-player {
+            display: flex;
+            flex-direction: column;
             border: 1px solid black;
+            width: 200px;
         }
-
+        
+        div.ia21-player video {
+            width: 100%;
+        }
+        
         div.ia21-player div.controllers { 
             display: flex;
             border-top: 1px solid black;
             column-gap: 10px;
         }
-
+        
         div.ia21-player div.controllers button.play-pause {
             background-color: transparent;
             border: 0 none;
             border-right: 1px solid black;
             cursor: pointer;
         }
-
+        
         div.ia21-player div.controllers div.dragbar {
             flex-grow: 1;
             position: relative;
@@ -37,7 +44,7 @@
             border-top: 1px solid black;
             width: 100%;
         }
-
+        
         div.ia21-player div.controllers div.dragbar div.draggable {
             background-color: black;
             width: .5rem;
@@ -51,10 +58,11 @@
 </head>
 <body>
     
-    <div class="joana">Joana</div>
-
     <div class="ia21-player">
-        <video></video>
+        <video>
+            <source src="https://www.w3schools.com/html/movie.mp4" type="video/mp4">
+            <source src="https://www.w3schools.com/html/movie.ogg" type="video/ogg">
+        </video>
         <div class="controllers">
             <button class="play-pause" data-deleteme="⏸">
                 ▶ 
@@ -71,5 +79,37 @@
         </div>
     </div>
     
+    
+    <div class="ia21-player">
+        <video>
+            <source src="https://www.w3schools.com/html/movie.mp4" type="video/mp4">
+            <source src="https://www.w3schools.com/html/movie.ogg" type="video/ogg">
+        </video>
+        <div class="controllers">
+            <button class="play-pause" data-deleteme="⏸">
+                ▶ 
+            </button>
+            <div class="dragbar timeline">
+                <div class="draggable"></div>
+            </div>
+            <div class="timer">
+                00:00
+            </div>
+            <div class="dragbar volume">
+                <div class="draggable"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const containers = document.querySelectorAll("div.ia21-player")
+       
+        containers.forEach(el => { 
+            const playPause = el.querySelector("button.play-pause")
+            const video = el.querySelector("video")
+            playPause.onclick = () => video.play()
+            playPause.addEventListener("click", () => alert("ZZZZ"))
+        })
+    </script>
 </body>
 </html>
