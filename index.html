@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="utf8">
     <title>Player</title>
@@ -19,7 +20,7 @@
             width: 100%;
         }
         
-        div.ia21-player div.controllers { 
+        div.ia21-player div.controllers {
             display: flex;
             border-top: 1px solid black;
             column-gap: 10px;
@@ -58,16 +59,18 @@
         }
     </style>
 </head>
+
 <body>
     
     <div class="ia21-player">
         <video>
             <!-- https://gist.github.com/jsturgis/3b19447b304616f18657 -->
-            <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+            <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            type="video/mp4">
         </video>
         <div class="controllers">
-            <button class="play-pause" data-deleteme="⏸">
-                ▶ 
+            <button class="play-pause" data-pause-icon="⏸" data-play-icon="▶">
+                ▶
             </button>
             <div class="dragbar timeline">
                 <div class="draggable"></div>
@@ -88,8 +91,8 @@
             <source src="https://www.w3schools.com/html/movie.ogg" type="video/ogg">
         </video>
         <div class="controllers">
-            <button class="play-pause" data-deleteme="⏸">
-                ▶ 
+            <button class="play-pause" data-pause-icon="⏸" data-play-icon="▶">
+                ▶
             </button>
             <div class="dragbar timeline">
                 <div class="draggable"></div>
@@ -105,21 +108,47 @@
     
     <script>
         const containers = document.querySelectorAll("div.ia21-player")
-       
-        containers.forEach(container => { 
+        
+        containers.forEach(container => {
             const btPlayPause = container.querySelector("button.play-pause")
             const video = container.querySelector("video")
             const timeline = container.querySelector(".dragbar.timeline")
             const timelineDrag = timeline.querySelector(".draggable")
             const timer = container.querySelector(".timer")
-            btPlayPause.addEventListener("click", () => video.play())
-
+            
+            btPlayPause.addEventListener("click", () => {
+                if (video.paused) {
+                    video.play()
+                    btPlayPause.innerText = btPlayPause.dataset.pauseIcon
+                    return
+                }
+                
+                video.pause()
+                btPlayPause.innerText = btPlayPause.dataset.playIcon
+            })
+            
+            video.currentTime = 58
+            
             video.addEventListener("timeupdate", () => {
                 const percent = (video.currentTime / video.duration) * 100
-                timelineDrag.style.setProperty("--percent", `${percent}%`) 
+                timelineDrag.style.setProperty("--percent", `${percent}%`)
                 timer.innerText = Math.floor(video.currentTime)
+            })
+            
+            // ---✀------------------------------------------------------
+            
+            const dragbars = container.querySelectorAll(".dragbar")
+            
+            dragbars.forEach(dragbar => {
+                const dragabble = dragbar.querySelector(".draggable")
+                dragbar.addEventListener("click", ev => {
+                    const width = Math.floor(dragbar.getBoundingClientRect().width)
+                    const percent = (ev.offsetX / width) * 100
+                    dragabble.style.setProperty("--percent", `${percent}%`)
+                })
             })
         })
     </script>
 </body>
+
 </html>
