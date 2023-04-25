@@ -55,7 +55,8 @@
       cursor: pointer;
       position: absolute;
       top: calc(50% - .25rem);
-      left: calc(var(--percent) - .25rem)
+      left: calc(var(--percent) - .25rem);
+      pointer-events: none;
     }
   </style>
 </head>
@@ -143,10 +144,38 @@
           dragabble.style.setProperty("--percent", `100%`)
         }
 
-        dragbar.addEventListener("click", ev => {
+        dragbar.addEventListener("mousedown", ev => {
+          dragbar.classList.add("dragging")
+        })
+        
+        dragbar.addEventListener("mouseup", ev => {
+          dragbar.classList.remove("dragging")
+        })
+
+        dragbar.addEventListener("mouseout", ev => {
+          dragbar.classList.remove("dragging")
+        })
+
+        dragbar.addEventListener("mousemove", ev => {
+          if (ev.target != dragbar || !dragbar.classList.contains("dragging")) 
+            return
+            
           const width = Math.floor(dragbar.getBoundingClientRect().width)
           const index = (ev.offsetX / width)
           const percent = index * 100
+
+          dragabble.style.setProperty("--percent", `${percent}%`)
+        })
+
+
+        dragbar.addEventListener("mouseup", ev => {
+          if (ev.target != dragbar ) 
+            return
+
+          const width = Math.floor(dragbar.getBoundingClientRect().width)
+          const index = (ev.offsetX / width)
+          const percent = index * 100
+          
           dragabble.style.setProperty("--percent", `${percent}%`)
 
           if (dragbar.classList.contains("timeline")) {
