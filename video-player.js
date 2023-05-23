@@ -1,3 +1,4 @@
+
 // ---✀------------------------------------------------------
 // ENCONTRANDO DOM DOS PLAYERS
 // 
@@ -15,24 +16,33 @@ containers.forEach(async container => {
   const timeline = container.querySelector(".dragbar.timeline")
   const timelineDrag = timeline.querySelector(".draggable")
   const timer = container.querySelector(".timer")
-  const playlist = container.querySelector(".playlist")
   const dragbars = container.querySelectorAll(".dragbar")
+  const playlist = container.querySelector(".playlist")
 
   // ---✀------------------------------------------------------
   // LER PLAYLIST DO ARQUIVO JSON
   //
+
   const requisicao = await fetch(container.dataset.playlist)
-  const json = await requisicao.json()
-
-  json.forEach(movie => {
-    playlist.innerHTML += `
-    <div>${movie.title}</div>
-    `
+  const lista = await requisicao.json()
+  
+  // for (let i = 0; i < lista.length; i++) {
+  //   const filme = lista[i]
+  //   const div = document.createElement("div")
+  //   div.innerHTML = filme.title
+  //   playlist.append(div)
+  // }
+  
+  lista.forEach(filme => {
+    const div = document.createElement("div")
+    div.innerHTML = filme.title
+    playlist.append(div)
   })
-
+  
   // ---✀------------------------------------------------------
   // BOTÃO PLAY PAUSE
   //
+  
   btPlayPause.addEventListener("click", () => {
     if (video.paused) {
       video.play()
@@ -47,6 +57,7 @@ containers.forEach(async container => {
   // ---✀------------------------------------------------------
   // CONTADOR DE TEMPO
   //
+  
   video.addEventListener("timeupdate", () => {
     const percent = (video.currentTime / video.duration) * 100
     const s = Math.floor(video.currentTime)
